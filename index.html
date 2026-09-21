@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#b34f72">
+<title>For Kicin — 27</title>
+<style>
+:root{
+  --rose:#b24f72;
+  --rose-dark:#8e3657;
+  --pink:#f7dce5;
+  --paper:#fffaf7;
+  --ink:#55333e;
+  --cream:#fdf6f1;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:#f4dfe5}
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(255,255,255,.8), transparent 28%),
+    linear-gradient(180deg,#f7e4e9 0%,#fffaf7 42%,#f2dbe3 100%);
+  color:var(--ink);
+  font-family: "Trebuchet MS", Arial, sans-serif;
+  overflow-x:hidden;
+}
+main{width:100%}
+.section{
+  min-height:100svh;
+  position:relative;
+  display:grid;
+  place-items:center;
+  padding:24px 14px;
+  overflow:hidden;
+}
+.paper-texture{
+  position:absolute;inset:0;pointer-events:none;opacity:.3;
+  background-image:
+    linear-gradient(rgba(178,79,114,.08) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(178,79,114,.08) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+.scrapbook-wrap{
+  width:min(1100px,100%);
+  position:relative;
+  transform:translateY(35px) scale(.965);
+  opacity:0;
+  transition:opacity 1s ease, transform 1.15s cubic-bezier(.2,.8,.2,1);
+}
+.section.visible .scrapbook-wrap{opacity:1;transform:translateY(0) scale(1)}
+.scrapbook{
+  width:100%;
+  display:block;
+  border-radius:4px;
+  box-shadow:0 24px 70px rgba(93,43,59,.18);
+  background:#fff;
+}
+.scrapbook-wrap::after{
+  content:"";
+  position:absolute;inset:0;
+  border:1px solid rgba(255,255,255,.7);
+  border-radius:4px;
+  pointer-events:none;
+}
+.intro .scrapbook-wrap{animation:float 7s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-8px) rotate(.15deg)}}
+
+.page-number{
+  position:absolute;bottom:12px;right:18px;
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;
+  color:rgba(86,43,57,.6);
+}
+.music-toggle{
+  position:fixed;right:16px;top:16px;z-index:50;
+  border:1px solid rgba(178,79,114,.25);
+  background:rgba(255,250,247,.88);
+  color:#8e3657;border-radius:999px;
+  width:44px;height:44px;cursor:pointer;
+  box-shadow:0 8px 24px rgba(76,31,47,.12);
+  backdrop-filter:blur(8px);
+  font-size:16px;
+}
+.music-toggle:active{transform:scale(.96)}
+.music-hint{
+  position:fixed;left:50%;bottom:22px;transform:translateX(-50%);
+  z-index:49;background:rgba(255,250,247,.94);
+  color:#8e3657;padding:10px 16px;border-radius:999px;
+  font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  box-shadow:0 8px 24px rgba(76,31,47,.12);
+  transition:opacity .6s ease, transform .6s ease;
+}
+.music-hint.hidden{opacity:0;transform:translate(-50%,12px);pointer-events:none}
+.video-intro{
+  min-height:72svh;
+  background:
+    radial-gradient(circle at 50% 25%,rgba(255,255,255,.85),transparent 32%),
+    linear-gradient(135deg,#f7dbe4,#fff7f2 58%,#edc9d5);
+  text-align:center;
+}
+.video-intro .content{
+  position:relative;z-index:1;max-width:720px;padding:20px;
+  opacity:0;transform:translateY(28px);
+  transition:all 1s ease;
+}
+.video-intro.visible .content{opacity:1;transform:none}
+.kicker{
+  text-transform:uppercase;letter-spacing:.28em;font-size:11px;color:var(--rose-dark);
+  margin-bottom:16px;
+}
+.video-intro h2{
+  margin:0;
+  font-size:clamp(42px,9vw,92px);
+  line-height:.95;
+  color:var(--rose-dark);
+  font-weight:700;
+}
+.video-intro p{
+  margin:20px auto 0;
+  max-width:560px;
+  font-family:Georgia,serif;
+  font-size:clamp(17px,3.2vw,24px);
+  line-height:1.6;
+}
+.video-card{
+  width:min(860px,100%);
+  position:relative;
+  padding:14px;
+  background:#fffdfb;
+  box-shadow:0 25px 80px rgba(76,31,47,.2);
+  transform:translateY(40px);
+  opacity:0;
+  transition:all 1s ease .15s;
+}
+.video-section.visible .video-card{transform:none;opacity:1}
+.video-frame{
+  width:100%;
+  display:block;
+  background:#090708;
+  aspect-ratio:16/9;
+  object-fit:contain;
+}
+.video-note{
+  display:flex;justify-content:space-between;gap:12px;align-items:center;
+  padding:11px 3px 1px;
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:#8b5a68;
+}
+.letter-section{
+  background:
+    radial-gradient(circle at 20% 15%,rgba(255,255,255,.9),transparent 30%),
+    linear-gradient(180deg,#fff7f3,#f7dfe6);
+  padding-top:70px;padding-bottom:90px;
+}
+.letter-book{
+  width:min(920px,100%);
+  background:linear-gradient(90deg,#fffdf9 0%,#fffaf5 49%,#f5e9e3 50%,#fffaf5 51%,#fffdf9 100%);
+  border-radius:6px;
+  box-shadow:0 30px 90px rgba(87,38,53,.2);
+  padding:clamp(28px,6vw,70px);
+  position:relative;
+  border:1px solid rgba(178,79,114,.12);
+  opacity:0;transform:translateY(40px);
+  transition:all 1s ease;
+}
+.letter-section.visible .letter-book{opacity:1;transform:none}
+.letter-book:before,.letter-book:after{
+  content:"";
+  position:absolute;left:50%;top:20px;bottom:20px;width:1px;
+  background:rgba(178,79,114,.13);
+}
+.letter-book:before{transform:translateX(-14px)}
+.letter-book:after{transform:translateX(14px)}
+.letter-inner{position:relative;z-index:1}
+.letter-label{
+  text-align:center;color:var(--rose-dark);
+  font-size:11px;letter-spacing:.32em;text-transform:uppercase;margin-bottom:22px;
+}
+.letter-title{
+  text-align:center;margin:0 0 32px;color:var(--rose-dark);
+  font-size:clamp(34px,7vw,64px);font-weight:700;
+}
+.letter-body{
+  max-width:680px;margin:auto;font-family:Georgia,serif;
+  font-size:clamp(17px,2.6vw,21px);line-height:1.85;color:#61414a;
+}
+.letter-body p{margin:0 0 1.25em}.letter-quote{font-family:cursive;font-size:clamp(22px,4vw,31px);line-height:1.55;color:var(--rose-dark);text-align:center;margin-top:36px!important}
+.signature{
+  text-align:right;font-family:cursive;font-size:25px;color:var(--rose-dark);
+  margin-top:34px;
+}
+.final{
+  min-height:85svh;
+  background:linear-gradient(180deg,#f7dce4,#b34f72);
+  color:white;text-align:center;
+}
+.final .inner{opacity:0;transform:scale(.96);transition:all 1.2s ease}
+.final.visible .inner{opacity:1;transform:scale(1)}
+.final-small{font-size:11px;letter-spacing:.3em;text-transform:uppercase;opacity:.8}
+.final h2{font-family:Georgia,serif;font-weight:400;font-size:clamp(34px,8vw,76px);line-height:1.12;margin:22px 0}
+.final p{font-size:15px;letter-spacing:.12em;opacity:.9}
+.scroll-cue{
+  position:absolute;bottom:18px;left:50%;transform:translateX(-50%);
+  font-size:10px;letter-spacing:.24em;text-transform:uppercase;opacity:.55;
+}
+@media (min-width:900px){
+  .section{padding:42px 28px}
+  .scrapbook-wrap{width:min(1120px,92vw)}
+}
+@media (prefers-reduced-motion:reduce){
+  *{scroll-behavior:auto!important;animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<audio id="bgMusic" loop preload="auto">
+  <source src="assets/photograph.mp3" type="audio/mpeg">
+</audio>
+<button class="music-toggle" id="musicToggle" aria-label="Toggle music">♫</button>
+<div class="music-hint" id="musicHint">tap anywhere to begin</div>
+<main>
+
+<section class="section scrapbook-section intro">
+  <div class="paper-texture"></div>
+  <div class="scrapbook-wrap">
+    <img class="scrapbook" src="assets/scrapbook-01.png" alt="Happy birthday Kicin scrapbook page">
+    <span class="page-number">01 / 05</span>
+  </div>
+  <div class="scroll-cue">scroll slowly ↓</div>
+</section>
+
+<section class="section scrapbook-section">
+  <div class="paper-texture"></div>
+  <div class="scrapbook-wrap">
+    <img class="scrapbook" src="assets/scrapbook-02.png" alt="About the birthday star scrapbook page">
+    <span class="page-number">02 / 05</span>
+  </div>
+</section>
+
+<section class="section scrapbook-section">
+  <div class="paper-texture"></div>
+  <div class="scrapbook-wrap">
+    <img class="scrapbook" src="assets/scrapbook-03.png" alt="The little things about you scrapbook page">
+    <span class="page-number">03 / 05</span>
+  </div>
+</section>
+
+<section class="section scrapbook-section">
+  <div class="paper-texture"></div>
+  <div class="scrapbook-wrap">
+    <img class="scrapbook" src="assets/scrapbook-04.png" alt="Favorite memories scrapbook page">
+    <span class="page-number">04 / 05</span>
+  </div>
+</section>
+
+<section class="section scrapbook-section">
+  <div class="paper-texture"></div>
+  <div class="scrapbook-wrap">
+    <img class="scrapbook" src="assets/scrapbook-05.png" alt="Birthday wishes scrapbook page">
+    <span class="page-number">05 / 05</span>
+  </div>
+</section>
+
+<section class="section video-intro">
+  <div class="content">
+    <div class="kicker">one more thing</div>
+    <h2>And here's<br>something for you.</h2>
+    <p>Everything you've just seen is only a small part of the story.<br>Now, press play.</p>
+  </div>
+  <div class="scroll-cue">↓</div>
+</section>
+
+<section class="section video-section" style="min-height:auto;padding-top:30px;padding-bottom:90px;background:#140c10;">
+  <div class="video-card">
+    <video class="video-frame" controls playsinline preload="metadata" poster="scrapbook-01.png">
+      <source src="https://res.cloudinary.com/eb1hhp8y/video/upload/v1790009417/final-video-web.mp4" type="video/mp4">
+      Your browser does not support the video element.
+    </video>
+    <div class="video-note">
+      <span>our little story</span>
+      <span>press play</span>
+    </div>
+  </div>
+</section>
+
+<section class="section letter-section">
+  <div class="letter-book">
+    <div class="letter-inner">
+      <div class="letter-label">a letter for you</div>
+      <h2 class="letter-title">To Kicin, on your 27th.</h2>
+
+      <div class="letter-body">
+        <p>Aku tidak tahu hidup akan membawaku ke mana suatu saat nanti.</p>
+
+        <p>Mungkin akan ada banyak hal yang berubah. Tempat yang kutinggali, orang-orang yang datang dan pergi, perkejaan yang kupunya, atau versi diriku sendiri yang sekarang akan berubah perlahan menjadi seseorang yang berbeda.</p>
+
+        <p>Tapi di antara banyaknya perubahan yang tidak bisa ku pastikan, ada satu hal yang selalu kuharapkan, semoga tetap ada kamu di dalamnya.</p>
+
+        <p>Semoga suatu saat nanti, ketika aku sudah sampai pada banyak hal yang saat ini masih ku usahakan, ada kamu yang ikut melihatnya. Ada kamu yang akan mendengar banyaknya ceritaku tentang hari-hari yang berat, tentang hal-hal kecil yang berhasil kulalui, dan tentang mimpi-mimpi yang dulunya hanya berani kusimpan sendiri.</p>
+
+        <p>Semoga ada kamu, di suatu hari ketika aku akhirnya punya rumah yang ingin kutinggali lama. Ada kamu di meja makan, mengomentari masakanku yang mungkin terlalu asin. Ada kamu di ruang tengah, mengeluh karena aku kembali menaruh barang sembarangan. Ada kamu yang mingkin sudah hafal dengan kebiasaanku, Bahkan sebelum aku menyadarinya.</p>
+
+        <p>Semoga selalu ada kamu di hari-hari biasa. Tidak hanya di hari ketika semuanya berjalan dengan sesuai keinginan. Tidak hanya ketika aku sedang cantik, sedang bahagia, atau sedang berada dalam versi tebaik diriku. Tapi juga di hari ketika aku bangun dengan perasaan buruk, ketika aku sedang banyak mengeluh, ketika aku terlalu lelah untuk menjadi menyenangkan, dan ketika aku tidak tahu harus bercerita tentang apa, tetapi aku ingin duduk di dekat seseorang.</p>
+
+        <p>Semoga ada kamu di sana.</p>
+
+        <p>Aku selalu hidup dengan penuh penuh ketakutan. Takut menjadi sesuatu yang mengecewakan, takut menjadi beban seseorang, takut di sayangi. Semua ketakutan itu membuatku sulit membayangkan bahwa suatu hari nanti aku bisa memiliki kehidupan yang terasa manis. Rasanya terlalu jauh dari kenyataan. Tapi kamu, menjadi salah satu jawaban atas doa-doaku yang selalu memohon kepada tuhan untuk meyakinkan ku bahwa hidup akan selalu baik-baik saja.</p>
+
+        <p>Mungkin akan ada hari ketika kita salah paham, ketika kamu muak dengan segala isi pikiranku yang berantakan, ketika kamu memilih diam. Tapi semoga, setelah itu semua, masih ada kamu.</p>
+
+        <p>Masih ada ketika aku mencapai semua yang kuinginkan. Orang pertama yang kucari setelahnya. Orang yang mungkin tidak mengerti semua proses yang kujalani, tetapi tetap tahu betapa sulitnya aku sampai di sana. Orang yang ikut senang meskipun pencapaian itu sebenarnya kecil.</p>
+
+        <p>Dan semoga ada kamu juga ketika aku gagal.</p>
+
+        <p>Ketika sesuatu tidak berjalan sesuai rencana dan aku mulai meragukan diriku sendiri. Semoga bukan nasihat panjang yang kuterima, melainkan pelukan menenangkan serta berkata “coba lagi nanti, sekarang kamu istirahat dulu”</p>
+
+        <p>Aku tidak tahu seperti apa bentuk masa depan.</p>
+
+        <p>Aku tidak tahu di kota mana kita akan tinggal, rumah seperti apa yang akan kita huni, atau kehidupan seperti apa yang akan kita jalani.</p>
+
+        <p>Tapi di antara banyaknya kemungkinan yang tidak aku ketahui di masa depan, aku selalu berharap, semoga ada kamu di dalamnya.</p>
+
+        <p>Semoga ada kamu di ulang tahun yang akan datang. Di perjalanan yang belum kita rencanakan. Di foto-foto yang belum pernah kita ambil. Di obrolan tengah malam yang belum terjadi. Di keputusan-keputusan besar yang suatu hari harus kita buat bersama. Semoga ada kamu ketika rambutku mulai berubah, ketika wajahku tidak lagi sama seperti sekarang, ketika kita sudah selalu bersama sampai hal-hal kecil tentang satu sama lain terasa biasa saja.</p>
+
+        <p>Karena di antara banyaknya harapanku tentang kehidupan di masa depan, aku hanya ingin kehidupan yang sederhana, dan ada kamu di dalamnya.</p>
+
+        <p>Dan suatu saat ketika aku telah tiba di titik itu, aku menoleh ke belakang, melihat semua hal yang sudah kulalui, semoga aku bisa tersenyum dan berkata.</p>
+
+        <p class="letter-quote">“untung saja, di semua cerita itu, ada kamu di dalamnya”</p>
+
+        <div class="signature">— Faqih</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section final">
+  <div class="inner">
+    <div class="final-small">for the girl who makes life brighter</div>
+    <h2>I'm just glad<br>you're in it.</h2>
+    <p>Happy 27th Birthday, Kicin. ♡</p>
+  </div>
+</section>
+
+</main>
+<script>
+const sections = document.querySelectorAll('.section');
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting) entry.target.classList.add('visible');
+  });
+},{threshold:0.22});
+sections.forEach(s=>observer.observe(s));
+
+const video = document.querySelector('video');
+const videoSection = document.querySelector('.video-section');
+const bgMusic = document.getElementById('bgMusic');
+const musicToggle = document.getElementById('musicToggle');
+const musicHint = document.getElementById('musicHint');
+let musicStarted = false;
+
+function fadeMusicIn(){
+  bgMusic.volume = 0;
+  bgMusic.play().then(()=>{
+    musicStarted = true;
+    let v = 0;
+    const timer = setInterval(()=>{
+      v += 0.025;
+      bgMusic.volume = Math.min(v, 0.42);
+      if(v >= 0.42) clearInterval(timer);
+    }, 80);
+  }).catch(()=>{});
+}
+
+function fadeMusicOut(){
+  const start = bgMusic.volume;
+  let v = start;
+  const timer = setInterval(()=>{
+    v -= 0.05;
+    bgMusic.volume = Math.max(v, 0);
+    if(v <= 0){
+      clearInterval(timer);
+      bgMusic.pause();
+    }
+  }, 50);
+}
+
+function fadeMusicBackIn(){
+  if(!musicStarted) return;
+  bgMusic.volume = 0;
+  bgMusic.play().catch(()=>{});
+  let v = 0;
+  const timer = setInterval(()=>{
+    v += 0.025;
+    bgMusic.volume = Math.min(v, 0.42);
+    if(v >= 0.42) clearInterval(timer);
+  }, 80);
+}
+
+function startExperience(){
+  if(!musicStarted) fadeMusicIn();
+  musicHint.classList.add('hidden');
+}
+document.addEventListener('pointerdown', startExperience, {once:true});
+musicToggle.addEventListener('click', (e)=>{
+  e.stopPropagation();
+  if(bgMusic.paused) fadeMusicIn();
+  else fadeMusicOut();
+});
+
+video.addEventListener('play', ()=>{
+  fadeMusicOut();
+});
+video.addEventListener('pause', ()=>{
+  if(video.currentTime < video.duration) fadeMusicBackIn();
+});
+video.addEventListener('ended', ()=>{
+  fadeMusicBackIn();
+});
+
+const videoObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting) videoSection.classList.add('visible');
+  });
+},{threshold:0.12});
+videoObserver.observe(videoSection);
+
+// Small scroll-linked parallax on scrapbook pages.
+window.addEventListener('scroll', ()=>{
+  document.querySelectorAll('.scrapbook-wrap').forEach(w=>{
+    const r=w.getBoundingClientRect();
+    const center=r.top+r.height/2;
+    const delta=(window.innerHeight/2-center)/window.innerHeight;
+    if(Math.abs(delta)<1.2){
+      w.style.setProperty('--parallax', `${delta*10}px`);
+      w.style.transform = `translateY(${delta*10}px) scale(${document.querySelector('.scrapbook-section.visible')?.contains(w) ? 1 : .965})`;
+    }
+  });
+},{passive:true});
+</script>
+</body>
+</html>
